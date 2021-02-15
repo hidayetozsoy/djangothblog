@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+  <div class="col-9">
+    <h2>{{user.first_name}} {{user.last_name}}<small> | {{user.username}}</small></h2>
+  </div>
+  {% if user.username == request.user.username %}
+    <div class="col-3">
+      <a class="btn btn-dark" style="float:right;margin-top:5px;" href="{% url 'user:dashboard' %}">Kontrol Paneli</a>
+    </div>
+  {% endif %}
+</div>
+<br>
+{% if articles %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Başlık</th>
+        <th scope="col">Yazar</th>
+        <th scope="col">Tarih</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for article in articles  %}
+        <tr>
+        <th scope="row">{{article.id}}</th>
+        <td><a href="/articles/article/{{article.id}}">{{article.title}}</a></td>
+        <td>{{article.author}}</td>
+        <td>{{article.created_date}}</td>
+        </tr>
+        {% endfor %}
+        
+
+    </tbody>
+  </table>
+{% else %}
+<hr>
+<h6 class="alert alert-warning">Henüz makale bulunmuyor</h6>
+{% endif %}
+{% endblock body %}

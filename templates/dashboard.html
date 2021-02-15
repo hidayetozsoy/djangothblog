@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body %}
+<table>
+  <tr>
+    <td><h3>Kontrol Paneli</h3>
+
+    </td>
+    <td><a style="margin-left: 10px;" class="btn btn-dark" href="/articles/addarticle">Makale Ekle</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Hoşgeldin, {{request.user.first_name}}</p>
+
+    </td>
+  </tr>
+</table>
+{% if articles %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Başlık</th>
+        <th scope="col">Yazar</th>
+        <th scope="col">Tarih</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for article in articles  %}
+        <tr>
+        <th scope="row">{{article.id}}</th>
+        <td><a href="/articles/article/{{article.id}}">{{article.title}}</a></td>
+        <td>{{article.author}}</td>
+        <td>{{article.created_date}}</td>
+        <td><a class="btn btn-dark" href="/articles/edit/{{article.id}}">Düzenle</a></td>
+        <td><a class="btn btn-dark" href="/articles/delete/{{article.id}}">Sil</a></td>
+        </tr>
+        {% endfor %}
+        
+
+    </tbody>
+  </table>
+{% else %}
+<h6 class="alert alert-warning">Henüz makaleniz bulunmuyor</h6>
+{% endif %}
+{% endblock body %}

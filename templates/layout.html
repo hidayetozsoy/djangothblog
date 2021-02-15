@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>
+        {% block title %}
+            TH Blog
+        {% endblock title %}
+    </title>
+</head>
+<body>
+
+    {% include "includes/navbar.html" %}
+    
+    <div style="margin-top: 100px;margin-bottom: 50px;" class="container ">
+        <div class="border-bottom" style="padding:20px;">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "info" %}
+                <div class="alert alert-danger fade in alert-dismissible show" role="alert">
+                    <strong>{{ message }}</strong>
+                   </div>
+                {% else %}
+                <div class="alert alert-{{message.tags}} fade in alert-dismissible show" role="alert">
+                    <strong>{{ message }}</strong> 
+                   </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% block body %}
+        {% endblock body %}
+    </div>
+    </div>
+    <div class="row" style="margin-bottom: 50px;">
+        <div class="col" style="text-align: center;"> 
+            <a href="{% url 'article:articles' %}" style="margin-right: 5px;">Makaleler</a>
+            <a href="{% url 'about' %}" style="margin-left: 5px;">Hakkımızda</a>
+        </div>
+    </div>
+    <script src="{% static 'alert_auto_dismiss.js' %}"></script>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>

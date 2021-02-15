@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block title %}
+{{article.title}} | TH BLOG
+{% endblock title %}
+{% block body %}
+{% load static %}
+<div class="row">
+    <div class="col">
+        <h2 style="text-align: ;">{{article.title}}</h2>
+        <small>{{article.author}} | {{article.created_date}}</small><br><br>
+        {% if request.user == article.author %}
+        <a class="btn btn-dark" href="{% url 'article:editarticle' id=article.id %}">Düzenle</a>
+        <a class="btn btn-dark" href="{% url 'article:deletearticle' id=article.id %}">Sil</a>
+        {% endif %}
+    </div>
+    <div class="col">     
+        <div class="border" style="float: right;padding:5px;">
+        <table style="width: 100%;float: right;">
+            <tr class="" style="text-align: center;">
+                <td style="text-align: right;">
+                    {% if article.rating != 0.0 %}        
+                        <h2 >{{article.rating}}/5<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                          </svg></h2>
+                        {{len_rates}} oy  
+                    {% else %}
+                        <h2>Rating Yok</h2>
+                    {% endif %}
+        
+                </td>   
+            </tr>
+            <tr style="text-align: center;float:right">
+                <td>
+                    <div class="btn-group" role="group">
+                        {% for i in rates %}
+                            {% if i == user_rate %}
+                                <a class="btn btn-dark" href="{% url 'article:ratearticle' id=article.id newrate=i %}">{{i}}</a>
+                            {% else %}
+                                <a class="btn btn-outline-dark" href="{% url 'article:ratearticle'  id=article.id newrate=i %}">{{i}}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        </table>   
+    </div>
+</div>
+</div>
+<hr>
+
+
+<div class="row">
+    <tr>
+
+        <div class="col{% if article.article_image %}-6 border-right" style="width: 50%;"{% else %}"{% endif %} >
+
+            <p>{{article.content | safe }}</p>
+        </div>
+        {% if article.article_image %}
+        <div class="col-6" style="width: 50%;">
+            <img style="width: 100%;" src="{{article.article_image.url}}" alt="">
+        </div>
+        {% endif %}
+    </div>
+    </tr>
+    <br>
+    <tr>
+        <h3>Yorumlar</h3>
+                    
+                
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card card-white post" style="padding:20px;margin-bottom:10px;">
+                    <div>
+                        <p><b>{{comment.title}}<a style="color: black;float:right;margin-right:5px;" href="{% url 'user:showuser' id=comment.author.id %}">{{comment.author}}</a></b><small> | {{comment.comment_date}}</small></p>
+                        <p>{{comment.content}}</p>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% else %}
+            <h6 class="alert alert-warning">Henüz bir yorum bulunmuyor, ilk yorumu siz yapın!</h6>
+        {% endif %}
+
+    </tr>
+    <tr>
+        <td>
+        {% if not request.user.is_authenticated %}
+        <h6 class="alert alert-danger">Yorum yapmak için giriş yapmalısınız. <a href="{% url 'user:login' %}">Giriş yapın</a></h6>
+        {% else %}
+        <h5>Yorum yapın</h5>
+            {% load crispy_forms_tags %}
+            <form action="{% url 'article:addcomment' article_id=article.id %}" method="POST">
+                {% csrf_token %}
+                {{ comment_form | crispy }}
+                <button type="submit" class="btn btn-dark">Yorum Yap</button>
+
+            </form>
+        {% endif %}
+        </td>
+    </tr>
+</table>
+{% endblock body %}

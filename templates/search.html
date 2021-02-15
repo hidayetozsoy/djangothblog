@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}
+'{{keyword}}' için TH BLOG'da ara | TH BLOG
+{% endblock title %}
+{% block body %}
+<div class="row">
+  <div class="col-6">
+    <h3>Arama</h3>
+  </div>
+  <div class="col-6" style="text-align: right;">
+    <a href="{% url 'article:articles' %}">Tüm Makaleler</a> 
+  </div>
+</div>
+
+{% if articles %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Başlık</th>
+        <th scope="col">Yazar</th>
+        <th scope="col">Tarih</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for article in articles  %}
+        <tr>
+        <th scope="row">{{article.id}}</th>
+        <td><a href="/articles/article/{{article.id}}">{{article.title}}</a></td>
+        <td><a href="/user/{{article.author_id}}">{{article.author}}</a></td>
+        <td>{{article.created_date}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<hr>
+<h6 class="alert alert-warning">Aramanıza uygun bir makale bulunmuyor</h6>
+{% endif %}
+{% endblock body %}

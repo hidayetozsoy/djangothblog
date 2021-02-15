@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="jumbotron text-center">
+    <h1>Bloğa Hoşgeldiniz...</h1>
+    <h5>Bu blogda makalalerinizi yayınlayarak bilgilerini başka insanlarla paylaşabilirsiniz, iyi eğlenceler :)</h5>
+</div>
+<p>
+    {% if request.user.is_authenticated %}
+    
+    {% else %}
+    giris yapilmamis
+    {% endif %}
+</p>
+{% endblock body %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h3>Giriş Yap</h3>
+        <hr>   
+        <form method="POST">
+            {% csrf_token %}
+            {% load crispy_forms_tags %}
+
+            {{ form | crispy }}
+            <table>
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-dark">Giriş Yap</button>
+                </td>
+                <td>
+                    <div style="height: 20px;line-height: 20px;margin-left:10px;">
+                        <p>Henüz bir hesabınız yok mu? <a href="{% url 'user:register' %}">Hemen Kaydolun!</a></p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</div>
+
+{% endblock body %}
